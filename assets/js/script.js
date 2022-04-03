@@ -45,6 +45,7 @@ const finishedQuiz = () => {
     startDiv.setAttribute("style", "display: none;");
     quizDiv.setAttribute("style", "display: none;");
     highScoresDiv.setAttribute("style", "display: none;");
+    failedDiv.setAttribute("style", "display: none;");
     header.setAttribute("style", "display: block;");
     finishedDiv.setAttribute("style", "display: block;");
 }
@@ -69,10 +70,11 @@ const startQuiz = (event) => {
     event.preventDefault();
     quizState = "quiz started";
     timer();
-    header.setAttribute("style", "display: block;");
     startDiv.setAttribute("style", "display: none;");
     finishedDiv.setAttribute("style", "display: none;");
-    highScoresDiv.setAttribute("style", "display: none;")
+    highScoresDiv.setAttribute("style", "display: none;");
+    failedDiv.setAttribute("style", "display: none;");
+    header.setAttribute("style", "display: block;");
     quizDiv.setAttribute("style", "display: block;");
     questionArray = shuffleArray(questionArray);
     cycleQuiz();
@@ -98,7 +100,11 @@ const timer = () => {
 const quizFailed = () => {
     if (secondsLeft <= 0) {
         quizState = "quiz failed";
+        startDiv.setAttribute("style", "display: none;");
+        finishedDiv.setAttribute("style", "display: none;");
+        highScoresDiv.setAttribute("style", "display: none;");
         quizDiv.setAttribute("style", "display: none;");
+        header.setAttribute("style", "display: block;");
         failedDiv.setAttribute("style", "display: block;");
     }
 }
@@ -175,6 +181,7 @@ const highScoreDisplay = (event) => {
     header.setAttribute("style", "display: none;");
     startDiv.setAttribute("style", "display: none;");
     quizDiv.setAttribute("style", "display: none;");
+    failedDiv.setAttribute("style", "display: none;")
     finishedDiv.setAttribute("style", "display: none;");
     highScoresDiv.setAttribute("style", "display: block;");
 
