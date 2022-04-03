@@ -7,28 +7,70 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Pop quiz, hotshot</title>
     <link rel="stylesheet" type="text/css" href="./assets/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap" rel="stylesheet">
 </head>
 
 <body>
     <header>
-        <div id="view-high-scores">
-            <p>View Highscores</p>
+        <div class="top" id="view-high-scores">
+            View Highscores
         </div>
 
-        <p id="time">Time: </p>
-        
-        <h1 id="high-score-title"></h1>
+        <div class="top" id="time">
+            <p id="time-text">Time: </p>
+        </div>
     </header>
 
-    <section>
-        <div id="question">Question</div>
+    <section class="main">
+        <section class="start">
+            <h1>Coding Quiz Challenge</h1>
 
-        <div id="multiple-choice">Multiple Choice</div>
+            <p>
+                Try to answer the questions within the time limit. 
+                Incorrect answers will take off time from the clock, so be 
+                accurate as well as quick!
+            </p>
 
-        <div id="answered">Answer</div>
+            <button class="bouncy" id="start-button">Start Quiz</button>
+        </section>
 
-        <div id="high-scores"></div>
+        <section class="quiz">
+            <h2 class="question"></h2>
+            <button class="answer-button" id="button1"></button>
+            <button class="answer-button" id="button2"></button>
+            <button class="answer-button" id="button3"></button>
+            <button class="answer-button" id="button4"></button>
+            <div id="feedback"></div>
+        </section>
+
+        <section class="finished">
+            <h2>All done!</h2>
+
+            <p>
+                Your final score is <span id="score"></span>
+            </p>
+
+            <form method="POST">
+                <div class="input-group">
+                    <label for="initials">Enter initials:</label>
+                    <input type="text" name="initials" id="initials">
+                </div>
+                <button id="submit">Submit</button>
+            </form>
+        </section>
+
+        <section class="high-scores">
+            <h1>Highscores</h1>
+
+            <ol id="high-score-list"></ol>
+
+            <button id="back">Go Back</button>
+            <button id="clear">Clear Highscores</button>
+        </section>
     </section>
+
     <script src="./assets/js/script.js"></script>
 </body>
 </html>
