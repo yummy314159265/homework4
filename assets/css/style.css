@@ -102,17 +102,42 @@ header {
     display: inline;
 }
 
+.failed {
+    display: none;
+    margin: auto;
+    text-align: center;
+}
 
 #time {
     position: absolute;
     right: 0;
 }
 
+#button1::before{
+    content: "1. ";
+}
+
+#button2::before{
+    content: "2. ";
+}
+
+#button3::before{
+    content: "3. ";
+}
+
+#button4::before{
+    content: "4. ";
+}
+
 #initials {
     color: black;
 }
 
-#view-high-scores {
+#view-high-scores, button {
     cursor: pointer;
+}
+
+#submit {
+    margin-top: 20px;
 }
 
