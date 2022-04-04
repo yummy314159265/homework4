@@ -197,7 +197,7 @@ const goBack = (event) => {
 
 // gets the score array from local storage, parses to an object, then adds each item as a list item in the high scores ordered list,
 // then displays the high scores div
-const highScoreDisplay = (event) => {
+const showHighScores = (event) => {
     event.preventDefault();
 
     highScoreList.innerHTML = "";
@@ -218,14 +218,14 @@ const highScoreDisplay = (event) => {
 
 // checks if there is an input in the text box, then if there is an input, creates a high score object with the score and initials,
 // then adds the high score to score array, sorts it from highest score to lowest score, then stores it in local storage
-// as a string, then calls the highScoreDisplay function
+// as a string, then calls the showHighScores function
 const submitHighScore = (event) => {
     event.preventDefault();
 
     quizState = "not started";
 
     if (initialsInput.value.trim() === "") {
-        highScoreDisplay(event);
+        showHighScores(event);
         return;
     }
 
@@ -239,10 +239,10 @@ const submitHighScore = (event) => {
 
     localStorage.setItem("highScores", JSON.stringify(scoreArray));
 
-    highScoreDisplay(event);
+    showHighScores(event);
 }
 
-// clears the score array, sets that score array to the local storage string, then calls highScoreDisplay
+// clears the score array, sets that score array to the local storage string, then calls showHighScores
 
 const clearHighScores = (event) => {
     event.preventDefault();
@@ -250,7 +250,7 @@ const clearHighScores = (event) => {
     scoreArray = [];
     localStorage.setItem("highScores", JSON.stringify(scoreArray));
 
-    highScoreDisplay(event);
+    showHighScores(event);
 }
 
 // initializes global variables
@@ -311,7 +311,7 @@ startButton.addEventListener("click", startQuiz);
 submitButton.addEventListener("click", submitHighScore);
 backButton.addEventListener("click", goBack);
 tryAgainButton.addEventListener("click", goBack);
-viewHighScores.addEventListener("click", highScoreDisplay);
+viewHighScores.addEventListener("click", showHighScores);
 clearButton.addEventListener("click", clearHighScores);
 for (let button of answerButtons) {
     button.addEventListener("click", answerQuestion);
