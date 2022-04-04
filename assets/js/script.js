@@ -3,7 +3,6 @@ const header = document.querySelector("header");
 const startDiv = document.querySelector(".start")
 const quizDiv = document.querySelector(".quiz");
 const finishedDiv = document.querySelector(".finished");
-const questionDiv = document.querySelector(".question");
 const highScoresDiv = document.querySelector(".high-scores");
 const failedDiv = document.querySelector(".failed")
 // buttons
@@ -20,6 +19,7 @@ const submitButton = document.querySelector("#submit");
 const tryAgainButton = document.querySelector("#try-again");
 // displays
 const timeDisplay = document.querySelector("#time-text");
+const questionDisplay = document.querySelector("#question");
 const feedbackDisplay = document.querySelector("#feedback");
 const scoreDisplay = document.querySelector("#score");
 // high score
@@ -110,7 +110,7 @@ const finishedQuiz = () => {
 const cycleQuiz = () => {
     if (questionIndex < questionArray.length) {
         buttonArray = shuffleArray(buttonArray);
-        questionDiv.textContent = questionArray[questionIndex].ask;
+        questionDisplay.textContent = questionArray[questionIndex].ask;
         buttonArray[0].textContent = questionArray[questionIndex].wrongAnswer1;
         buttonArray[1].textContent = questionArray[questionIndex].wrongAnswer2;
         buttonArray[2].textContent = questionArray[questionIndex].wrongAnswer3;
@@ -174,7 +174,7 @@ const answerQuestion = (event) => {
     fadeText(feedbackText, 1);
 }
 
-// returns user to previous page in the quiz if quiz state is "quiz started", 
+// returns user to previous page in the quiz if quiz state is "quiz started" or "quiz finished"
 // otherwise bring user back to start page and reinitialize secondsLeft and questionIndex
 const goBack = (event) => {
     event.preventDefault();
@@ -208,7 +208,6 @@ const highScoreDisplay = (event) => {
         for (let i = 0; i < scoreArray.length; i++) {
             let li = document.createElement("li");
             li.textContent = "Score: " + scoreArray[i].storedScore + " - " + scoreArray[i].storedInitials;
-            console.log(scoreArray[i].storedInitials);
             highScoreList.appendChild(li);
         }
     }
@@ -224,7 +223,7 @@ const submitHighScore = (event) => {
     event.preventDefault();
 
     quizState = "not started";
-    
+
     if (initialsInput.value.trim() === "") {
         highScoreDisplay(event);
         return;
