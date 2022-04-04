@@ -97,8 +97,11 @@ const timer = () => {
     }, 1000);
 }
 
+// quiz functions
+
 // display finished quiz section
 const finishedQuiz = () => {
+    quizState = "quiz finished";
     toggleDiv("off", startDiv, quizDiv, highScoresDiv, failedDiv);
     toggleDiv("on", header, finishedDiv);
 }
@@ -115,7 +118,6 @@ const cycleQuiz = () => {
     } else {
         score = secondsLeft - 1;
         scoreDisplay.textContent = score;
-        quizState = "quiz finished";
         finishedQuiz();
     }
 }
@@ -143,8 +145,8 @@ const quizFailed = () => {
 
 // first removes children from feedbackDisplay div, then creates a p element, sets its attributes, then if the button clicked on
 // is the correct answer, show "Correct" in the feedbackDisplay div, add 1 to questionIndex and cycle through quiz, otherwise
-// show "Wrong" and subtract 10 from seconds left, and if seconds left is less than 0, set it to 1 (otherwise the time will run through
-// the setInterval one more time and go to -1).
+// show "Wrong" and subtract 10 from seconds left, and if seconds left is less than or equal to 0, set it to 1 (otherwise the time will run through
+// the setInterval one more time and go to -1)
 const answerQuestion = (event) => {
     event.preventDefault();
 
@@ -172,14 +174,17 @@ const answerQuestion = (event) => {
     fadeText(feedbackText, 1);
 }
 
-// returns user. if quiz state is "quiz started", bring user back to quiz div (if user is viewing high score during quiz),
+// returns user to previous page in the quiz if quiz state is "quiz started", 
 // otherwise bring user back to start page and reinitialize secondsLeft and questionIndex
 const goBack = (event) => {
+    event.preventDefault();
 
     if (quizState === "quiz started") {
-        event.preventDefault();
         toggleDiv("off", finishedDiv, highScoresDiv, startDiv, failedDiv);
         toggleDiv("on", header, quizDiv);
+    } else if (quizState === "quiz finished") {
+        toggleDiv("off", quizDiv, highScoresDiv, startDiv, failedDiv);
+        toggleDiv("on", header, finishedDiv);
     } else {
         event.preventDefault();
         secondsLeft = initialTime;
@@ -218,6 +223,8 @@ const highScoreDisplay = (event) => {
 const submitHighScore = (event) => {
     event.preventDefault();
 
+    quizState = "not started";
+    
     if (initialsInput.value.trim() === "") {
         highScoreDisplay(event);
         return;
