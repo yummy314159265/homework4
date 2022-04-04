@@ -55,7 +55,7 @@ const toggleDiv = (state, ...divs) => {
     for (let div of divs) {
         if (state === "on") {
             div.setAttribute("style", "display: block;");
-        } else {
+        } else if (state === "off") {
             div.setAttribute("style", "display: none;");
         }
     }
@@ -307,8 +307,8 @@ backButton.addEventListener("click", goBack);
 tryAgainButton.addEventListener("click", goBack);
 viewHighScores.addEventListener("click", highScoreDisplay);
 clearButton.addEventListener("click", clearHighScores);
-for (let answer of answerButtons) {
-    answer.addEventListener("click", answerQuestion);
+for (let button of answerButtons) {
+    button.addEventListener("click", answerQuestion);
 }
 
 // initialize page
