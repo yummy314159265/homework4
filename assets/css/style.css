@@ -1,143 +1,48 @@
 * {
+    transition: all 1s ease-in-out;
     font-family: 'Roboto', Arial, Helvetica, sans-serif;
-    color: #FFFFFF;
-    transition: all 1s ease-out;
 }
 
-/* Button by Federico Dossena https://fdossena.com/?p=html5cool/buttons/i.frag */
-button {
-    display:inline-block;
-    padding:0.3em 1.2em;
-    margin:0 0.1em 0.1em 0;
-    border:0.16em solid rgba(255,255,255,0);
-    border-radius:2em;
-    box-sizing: border-box;
-    text-decoration:none;
-    font-family:'Roboto',sans-serif;
-    font-weight:500;
-    color:#FFFFFF;
-    background-color:#f14e4e;
-    text-shadow: 0 0.04em 0.04em rgba(0,0,0,0.35);
-    text-align:center;
-    transition: all 0.2s;
-}
-
-h1 {
-    font-size: 200%;
-}
-
-h2 {
-    font-size: 150%;
-}
-
-button:hover {
-    border-color: rgba(255,255,255,1);
-}
-
-.bouncy {
-    animation:bouncy 5s infinite linear;
-    position:relative;
-}
-
-@keyframes bouncy {
-    0%{top:0em}
-    40%{top:0em}
-    43%{top:-0.9em}
-    46%{top:0em}
-    48%{top:-0.4em}
-    50%{top:0em}
-    100%{top:0em;}
-}
-
-body {
-    background-color: #000000;
-}
-
-header {
-    position: relative;
-}
-
-.top {
-    display: inline;
-}
-
-.top p {
-    display: inline;
-}
-
-.main {
-    margin: 50px auto auto auto;
-    width: 50%;
-}
-
-.start {
+.center {
     text-align: center;
+    margin: 10px auto 10px auto;
 }
 
-.quiz {
-    display: none;
+.top-left {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-left: 10px;
+}
+
+.top-right {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-right: 10px;
+}
+
+.pointer {
+    width: fit-content;
+    cursor: pointer;
 }
 
 .answer-button {
     display: block;
-    width: 200px;
-    margin-top: 10px;
-    text-align: left;
 }
 
-.input-group {
-    display: inline;
-}
-
-.finished {
-    display: none;
-}
-
-.high-scores {
-    display: none;
-    margin-top: 19px;
-}
-
-.high-scores button {
-    display: inline;
-}
-
-.failed {
-    display: none;
-    margin: auto;
-    text-align: center;
-}
-
-#time {
-    position: absolute;
-    right: 0;
-}
-
-#button1::before{
+#answer-button-1::before {
     content: "1. ";
 }
 
-#button2::before{
+#answer-button-2::before {
     content: "2. ";
 }
 
-#button3::before{
+#answer-button-3::before {
     content: "3. ";
 }
 
-#button4::before{
+#answer-button-4::before {
     content: "4. ";
 }
-
-#initials {
-    color: black;
-}
-
-#view-high-scores, button {
-    cursor: pointer;
-}
-
-#submit {
-    margin-top: 20px;
-}
-
