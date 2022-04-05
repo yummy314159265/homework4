@@ -1,8 +1,6 @@
-// TODO: Button randomizer
-// TODO: Question randomizer
 // TODO: css
 // TODO: create button functions
-
+const body = $('body');
 const header = $('header');
 const titleEl = $('#title');
 const startTextEl = $('#start-text');
@@ -17,31 +15,28 @@ const startText = startTextEl.text();
 const startButtonText = startButtonEl.text();
 const initialTime = 75;
 const penalty = 10;
+const numberOfAnswers = 4;
 
-let initialsInputEl;
-
-let answerButtonArray = [];
+let timer;
 let scoreArray = [];
 let previousState = "start";
-let timer;
 let timeLeft = initialTime;
 let questionIndex = 0;
-
-questionArray = [
+let questionArray = [
     {
-        question: "Commonly used data types DO NOT include",
-        wrongAnswer1: "strings",
-        wrongAnswer2: "booleans",
-        wrongAnswer3: "numbers",
-        correctAnswer: "alerts"
+        question: "What is love?",
+        wrongAnswer1: "Baby don't hurt me",
+        wrongAnswer2: "don't hurt me",
+        wrongAnswer3: "no more",
+        correctAnswer: "*nods head violently*"
     },
 
     {
-        question: "The condition in an if / else statement is enclosed within ______.",
-        wrongAnswer1: "quotes",
-        wrongAnswer2: "curly brackets",
-        wrongAnswer3: "square brackets",
-        correctAnswer: "parentheses"
+        question: "Never gonna _____",
+        wrongAnswer1: "give you up",
+        wrongAnswer2: "gonna let you down",
+        wrongAnswer3: "run around and desert you",
+        correctAnswer: "DUCKROLL"
     },
 
     {
@@ -69,8 +64,12 @@ questionArray = [
     }
 ]
 
-const stopCountdown = () => {
-    clearInterval(timer);
+const shuffleArray = (array) => {
+    for (let newIndex = array.length - 1; newIndex > 0; newIndex--) {
+        const oldIndex = Math.floor(Math.random() * (newIndex+1));
+        [array[newIndex], array[oldIndex]] = [array[oldIndex], array[newIndex]];
+    }
+    return array;
 }
 
 const setState = (state) => {
@@ -83,35 +82,29 @@ const clearAll = () => {
     mainEl.empty();
 }
 
-const displayQuestion = () => {
-    clearAll();
-    setState('quiz');
-    let questionEl = $('<h2 class=center id=question>');
-    questionEl.text(questionArray[questionIndex].question);
-    mainEl.append(questionEl);
+const stopCountdown = () => {
+    clearInterval(timer);
 }
 
-const fadeElement = (element) => {
-    let fadeTime = 1;
-    let fadeInterval = setInterval(() => {
-        fadeTime--;
-        if (fadeTime <= 0) {
-            element.css('opacity', '0');
-            clearInterval(fadeInterval);
+const countdown = () => {
+    timer = setInterval(() => {
+        timeLeft--;
+        timeEl.text("Time left: " + timeLeft + "s");
+
+        if(timeLeft <= 0) {
+            timeEl.text("Time left: 0s");
+            displayQuizFailed();
+            clearInterval(timer);
+        } else if (questionIndex >= questionArray.length) {
+            clearInterval(timer);
         }
     }, 1000);
 }
 
-const displayFeedback = (string) => {
-
-    if (afterMainEl.has('#feedback')) {
-        $('#feedback').remove();
-    }
-
-    let feedbackEl = $('<div class=center id=feedback>');
-    feedbackEl.text(string);
-    afterMainEl.append(feedbackEl);
-    fadeElement(feedbackEl);
+const resetQuiz = () => {
+    timeLeft = initialTime;
+    questionIndex = 0;
+    timeEl.text('Time: ' + timeLeft + 's');
 }
 
 const getHighScores = () => {
@@ -122,140 +115,46 @@ const storeScore = () => {
     localStorage.setItem('highScores', JSON.stringify(scoreArray));
 }
 
-const createHighScoreList = (olElement) => {
-    getHighScores();
-    
-    for (let i = 0; i < scoreArray.length; i++) {
-        let scoreLiEl = $('<li class=center id=score-' + i + '>');
-        scoreLiEl.text('Score: ' + scoreArray[i].score + ' - ' + scoreArray[i].initials);
-        olElement.append(scoreLiEl);
-    }
+const createStartButton = () => {
+    startButtonEl.text(startButtonText);
+
+    return startButtonEl;
 }
 
-const resetQuiz = () => {
-    timeLeft = initialTime;
-    questionIndex = 0;
-    timeEl.text('Time: ' + timeLeft + 's');
+const createTitleEl = () => {
+    titleEl.text(titleText);
+    return titleEl;
+}
+
+const createStartTextEl = () => {
+    startTextEl.text(startText);
+    return startTextEl;
 }
 
 const displayStart = () => {
-    clearAll();
-    resetQuiz();
 
-    titleEl.text(titleText);
-    startTextEl.text(startText);
-    startButtonEl.text(startButtonText);
-
-    header.append(titleEl);
-    mainEl.append(startTextEl);
-    mainEl.append(startButtonEl);
-
-    startButtonEl.on('click', startQuiz);
-}
-
-const goBack = () => {
-    clearAll();
-
-    if (previousState === 'completed') {
-        displayCompleted();
-    } else if (previousState === 'quiz') {
-        displayQuestion();
-        displayAnswerButtons();
-    } else {
-        displayStart();
-    }
-}
-
-const clearHighScores = () => {
-    scoreArray = [];
-    storeScore();
-    displayHighScores();
-}
-
-const createBackButton = () => {
-    let backButtonEl = $('<button class=center id=back-button>');
-    backButtonEl.text('Back');
-    mainEl.append(backButtonEl);
-    backButtonEl.on('click', goBack);
-}
-
-const createClearButton = () => {
-    let clearButtonEl = $('<button class=display center id=clear-button>');
-    clearButtonEl.text('Clear High Scores');
-    mainEl.append(clearButtonEl);
-    clearButtonEl.on('click', clearHighScores);
-}
-
-const displayHighScores = () => {
-    clearAll();
-
-    setState('high scores');
-    
-    highScoreTitleEl = $('<h1 class=center id=high-score-title>');
-    highScoreTitleEl.text('High Scores');
-
-    let highScoreListEl = $('<ol class=center id=high-scores-list>')
-    highScoreListEl.css('width', 'fit-content');
-    createHighScoreList(highScoreListEl);
-
-    header.append(highScoreTitleEl);
-    mainEl.append(highScoreListEl);
-    createBackButton();
-    createClearButton();
-}
-
-const addScore = (anotherScore) => {
-    getHighScores();
-    scoreArray.push(anotherScore);
-    scoreArray.sort((a, b) => b.score - a.score);
-}
-
-const submitHighScore = (event) => {
-    event.preventDefault();
-
-    setState('submitted');
-
-    if (initialsInputEl.val().trim() === "") {
-        displayHighScores();
+    if (mainEl.attr('data-state') === 'start') {
         return;
+    } else {
+        clearAll();
+        resetQuiz();
+        
+        header.append(createTitleEl());
+        mainEl.append(createStartTextEl());
+        mainEl.append(createStartButton());
     }
-
-    let newScore = {
-        score: timeLeft,
-        initials: initialsInputEl.val()
-    }
-    
-    addScore(newScore);
-    storeScore();
-    displayHighScores();
 }
 
-const displayCompleted = () => {
-    setState('completed');
+const createQuestionEl = () => {
+    let questionEl = $('<h2 class=center id=question>');
+    questionEl.text(questionArray[questionIndex].question);
+    return questionEl;
+}
 
-    stopCountdown();
-
-    let finishTextEl = $('<h2 class=center id=finish-text>');
-    finishTextEl.text('All done!');
-
-    let formEl = $('<form class=center method=POST>');
-
-    let initialsLabelEl = $('<label class=center for=initials>');
-    initialsLabelEl.text('Enter initials:');
-
-    initialsInputEl = $('<input class=center type=text name=initials id=initials>');
-    
-    let submitButtonEl = $('<button class=center id=submit-button>');
-    submitButtonEl.text('Submit');
-
-    formEl.append(initialsLabelEl);
-    formEl.append(initialsInputEl);
-    formEl.append(submitButtonEl);
-  
-    mainEl.append(finishTextEl);
-    mainEl.append(formEl);
-
-    submitButtonEl.on('click', submitHighScore)
+const displayQuestion = () => {
+    clearAll();
+    setState('quiz');
+    mainEl.append(createQuestionEl());
 }
 
 const goToNextQuestion = () => {
@@ -273,7 +172,6 @@ const checkAnswer = (event) => {
     event.preventDefault();
 
     let target = $(event.target);
-
     if (questionArray[questionIndex].correctAnswer === target.text()) {
         displayFeedback('Correct!');
         goToNextQuestion();
@@ -283,55 +181,222 @@ const checkAnswer = (event) => {
     }
 }
 
-const displayAnswerButtons = () => {
+const randomizeAnswerButtons = (...buttons) => shuffleArray(buttons);
 
-    let answerButton1El = $('<button class="answer-button display center" id=answer-button-1>')
+const createAnswerButtons = () => {
+    let answerButton1El = $('<button class=answer-button>')
     answerButton1El.text(questionArray[questionIndex].wrongAnswer1);
-    mainEl.append(answerButton1El);
 
-    let answerButton2El = $('<button class="answer-button display center" id=answer-button-2>')
+    let answerButton2El = $('<button class=answer-button>')
     answerButton2El.text(questionArray[questionIndex].wrongAnswer2);
-    mainEl.append(answerButton2El);
 
-    let answerButton3El = $('<button class="answer-button display center" id=answer-button-3>')
+    let answerButton3El = $('<button class=answer-button>')
     answerButton3El.text(questionArray[questionIndex].wrongAnswer3);
-    mainEl.append(answerButton3El);
 
-    let answerButton4El = $('<button class="answer-button display center" id=answer-button-4>')
+    let answerButton4El = $('<button class=answer-button>')
     answerButton4El.text(questionArray[questionIndex].correctAnswer);
-    mainEl.append(answerButton4El);
 
-    answerButton1El.on('click', checkAnswer);
-    answerButton2El.on('click', checkAnswer);
-    answerButton3El.on('click', checkAnswer);
-    answerButton4El.on('click', checkAnswer);
+    let answerButtonArray = randomizeAnswerButtons(answerButton1El, answerButton2El, answerButton3El, answerButton4El);
+
+    return answerButtonArray;
 }
 
-const quizFailed = () => {
-    clearAll();
-    let failedTextEl = $('<h2 class=center id=failed-text>')
-    failedTextEl.text('You\'ve run out of time, loser!');
-    mainEl.append(failedTextEl);
-    createBackButton();
+const displayAnswerButtons = () => {
+    let answerButtons = createAnswerButtons();
+    for (let i=0; i < answerButtons.length; i++) {
+        answerButtons[i].attr('id', 'answer-button-' + (i + 1));
+        mainEl.append(answerButtons[i]);
+    }
 }
 
-const countdown = () => {
-    timer = setInterval(() => {
-        timeLeft--;
-        timeEl.text("Time left: " + timeLeft + "s");
-
-        if(timeLeft <= 0) {
-            timeEl.text("Time left: 0s");
-            quizFailed();
-            clearInterval(timer);
-        } else if (questionIndex >= questionArray.length) {
-            clearInterval(timer);
+const fadeElement = (element) => {
+    let fadeTime = 1;
+    let fadeInterval = setInterval(() => {
+        fadeTime--;
+        if (fadeTime <= 0) {
+            element.css('opacity', '0');
+            clearInterval(fadeInterval);
         }
     }, 1000);
 }
 
+const createFeedbackEl = (string) => {
+    let feedbackEl = $('<div class=center id=feedback>');
+    feedbackEl.text(string);
+    return feedbackEl;
+}
+
+const displayFeedback = (string) => {
+
+    if (afterMainEl.has('#feedback')) {
+        $('#feedback').remove();
+    }
+
+    feedback = createFeedbackEl(string);
+    afterMainEl.append(feedback);
+    fadeElement(feedback);
+}
+
+const goBack = () => {
+    clearAll();
+
+    if (previousState === 'completed') {
+        displayCompleted();
+    } else if (previousState === 'quiz') {
+        displayQuestion();
+        displayAnswerButtons();
+    } else {
+        init();
+    }
+}
+
+const createBackButton = () => {
+    let backButtonEl = $('<button class=center id=back-button>');
+    backButtonEl.text('Back');
+    return backButtonEl;
+}
+
+const clearHighScores = () => {
+    scoreArray = [];
+    storeScore();
+    displayHighScores();
+}
+
+const createClearButton = () => {
+    let clearButtonEl = $('<button class=center id=clear-button>');
+    clearButtonEl.text('Clear High Scores');
+
+    return clearButtonEl;
+}
+
+const createHighScoreTitleEl = () => {
+    let highScoreTitleEl = $('<h1 class=center id=high-score-title>');
+    highScoreTitleEl.text('High Scores');
+
+    return highScoreTitleEl;
+}
+
+const createHighScoreList = (olElement) => {
+    getHighScores();
+    
+    for (let i = 0; i < scoreArray.length; i++) {
+        let scoreLiEl = $('<li class=center id=score-' + i + '>');
+        scoreLiEl.text('Score: ' + scoreArray[i].score + ' - ' + scoreArray[i].initials);
+        olElement.append(scoreLiEl);
+    }
+
+    return olElement;
+}
+
+const createHighScoreListEl = () => {
+    let highScoreListEl = $('<ol class=center id=high-scores-list>')
+    highScoreListEl.css('width', 'fit-content');
+    createHighScoreList(highScoreListEl);
+    return highScoreListEl;
+}
+
+const displayHighScores = () => {
+    
+    clearAll();
+
+    if (previousState !== "quiz") {
+        setState('high scores');
+    }
+    
+    header.append(createHighScoreTitleEl());
+    mainEl.append(createHighScoreListEl());
+    mainEl.append(createBackButton());
+    mainEl.append(createClearButton());
+}
+
+const addScore = (anotherScore) => {
+    getHighScores();
+    scoreArray.push(anotherScore);
+    scoreArray.sort((a, b) => b.score - a.score);
+}
+
+const getInitialsValue = () => $('#initials').val();
+
+
+const submitHighScore = (event) => {
+    event.preventDefault();
+
+    setState('submitted');
+
+    if (getInitialsValue().trim() === "") {
+        displayHighScores();
+        return;
+    }
+
+    let newScore = {
+        score: timeLeft,
+        initials: getInitialsValue()
+    }
+    
+    addScore(newScore);
+    storeScore();
+    displayHighScores();
+}
+
+const createFinishTextEl = () => {
+    let finishTextEl = $('<h2 class=center id=finish-text>');
+    finishTextEl.text('All done!');
+    return finishTextEl;
+}
+
+const createSubmitButton = () => {
+    let submitButtonEl = $('<button class=center id=submit-button>');
+    submitButtonEl.text('Submit');
+
+    return submitButtonEl;
+}
+
+const createInitialsLabelEl = () => {
+    let initialsLabelEl = $('<label class=center for=initials>');
+    initialsLabelEl.text('Enter initials:');
+    return initialsLabelEl;
+}
+
+const createInitialsInputEl = () => {
+    let initialsInputEl = $('<input class=center type=text name=initials id=initials>');
+    return initialsInputEl;
+}
+
+const createFormEl = () => {
+    let formEl = $('<form class=center method=POST>');
+    formEl.append(createInitialsLabelEl());
+    formEl.append(createInitialsInputEl());
+    formEl.append(createSubmitButton());
+    return formEl;
+}
+
+const displayCompleted = () => {
+    setState('completed');
+
+    stopCountdown();
+
+    mainEl.append(createFinishTextEl());
+    mainEl.append(createFormEl());
+}
+
+const createFailedTextEl = () => {
+    let failedTextEl = $('<h2 class=center id=failed-text>')
+    failedTextEl.text('You\'ve run out of time, loser!');
+    return failedTextEl;
+}
+
+const displayQuizFailed = () => {
+    clearAll();
+    setState('failed');
+    previousState = 'start';
+
+    mainEl.append(createFailedTextEl());
+    mainEl.append(createBackButton());
+}
+
 const startQuiz = (event) => {
     event.preventDefault();
+    questionArray = shuffleArray(questionArray);
     displayQuestion();
     displayAnswerButtons();
     countdown();
@@ -342,6 +407,13 @@ const init = () => {
     displayStart();
 }
 
-highScoresEl.on('click', displayHighScores);
+body.on('click', '#view-high-scores', displayHighScores);
+mainEl.on('click', '#start-button', startQuiz);
+mainEl.on('click', '#back-button', goBack);
+mainEl.on('click', '#submit-button', submitHighScore);
+mainEl.on('click', '#clear-button', clearHighScores);
+for (i=0; i < numberOfAnswers; i++) {
+    mainEl.on('click', '#answer-button-' + (i+1), checkAnswer);
+}
 
 init();
