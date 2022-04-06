@@ -13,7 +13,7 @@ const afterMainEl = $('#after-main');
 const titleText = titleEl.text();
 const startText = startTextEl.text();
 const startButtonText = startButtonEl.text();
-const initialTime = 75;
+const initialTime = 50;
 const penalty = 10;
 const numberOfAnswers = 4;
 
@@ -40,27 +40,27 @@ let questionArray = [
     },
 
     {
-        question: "String values must be enclosed within ______ when being assigned to variables.",
-        wrongAnswer1: "commas",
-        wrongAnswer2: "curly brackets",
-        wrongAnswer3: "parentheses",
-        correctAnswer: "quotes"
+        question: "Wanna know how I got these scars?",
+        wrongAnswer1: "My father was a drinker, and a fiend...",
+        wrongAnswer2: "So I had a wife, beautiful... like you...",
+        wrongAnswer3: "YOU GET WHAT A *#$Y#I@ DESERVE",
+        correctAnswer: "no"
     },
 
     {
-        question: "Arrays in JavaScript can be used to store ______.",
-        wrongAnswer1: "numbers and strings",
-        wrongAnswer2: "other arrays",
-        wrongAnswer3: "booleans",
-        correctAnswer: "all of the above"
+        question: "You're gonna need a _____",
+        wrongAnswer1: "smile you son of a $&#(#",
+        wrongAnswer2: "SHARK!?",
+        wrongAnswer3: "lifeless eyes, like a doll's eyes",
+        correctAnswer: "bigger boat"
     },
 
     {
-        question: "A very useful tool used during development and debugging for printing content to the debugger is:",
-        wrongAnswer1: "JavaScript",
-        wrongAnswer2: "terminal/bash",
-        wrongAnswer3: "for loops",
-        correctAnswer: "console.log"
+        question: "What do you call a royale with cheese in France?",
+        wrongAnswer1: "Quarter pounder",
+        wrongAnswer2: "Big Kahuna burger",
+        wrongAnswer3: "Ezekiel 25, 17",
+        correctAnswer: "None of these"
     }
 ]
 
@@ -71,6 +71,13 @@ const shuffleArray = (array) => {
     }
     return array;
 }
+
+const toggleDisplay = (cls, ...elements) => {
+    for (let element of elements) {
+        element.css ('display', cls)
+    }
+}
+
 
 const setState = (state) => {
     previousState = mainEl.attr('data-state');
@@ -146,7 +153,7 @@ const displayStart = () => {
 }
 
 const createQuestionEl = () => {
-    let questionEl = $('<h2 class=center id=question>');
+    let questionEl = $('<h2 class=left id=question>');
     questionEl.text(questionArray[questionIndex].question);
     return questionEl;
 }
@@ -164,6 +171,7 @@ const goToNextQuestion = () => {
         displayQuestion();
         displayAnswerButtons();
     } else {
+        $('#feedback').attr('class', 'center');
         displayCompleted();
     }
 }
@@ -221,7 +229,7 @@ const fadeElement = (element) => {
 }
 
 const createFeedbackEl = (string) => {
-    let feedbackEl = $('<div class=center id=feedback>');
+    let feedbackEl = $('<div class=left id=feedback>');
     feedbackEl.text(string);
     return feedbackEl;
 }
@@ -239,6 +247,7 @@ const displayFeedback = (string) => {
 
 const goBack = () => {
     clearAll();
+    toggleDisplay('block', highScoresEl, timeEl);
 
     if (previousState === 'completed') {
         displayCompleted();
@@ -251,7 +260,7 @@ const goBack = () => {
 }
 
 const createBackButton = () => {
-    let backButtonEl = $('<button class=center id=back-button>');
+    let backButtonEl = $('<button class="center sml-btn" id=back-button>');
     backButtonEl.text('Back');
     return backButtonEl;
 }
@@ -263,7 +272,7 @@ const clearHighScores = () => {
 }
 
 const createClearButton = () => {
-    let clearButtonEl = $('<button class=center id=clear-button>');
+    let clearButtonEl = $('<button class="center sml-btn" id=clear-button>');
     clearButtonEl.text('Clear High Scores');
 
     return clearButtonEl;
@@ -280,7 +289,7 @@ const createHighScoreList = (olElement) => {
     getHighScores();
     
     for (let i = 0; i < scoreArray.length; i++) {
-        let scoreLiEl = $('<li class=center id=score-' + i + '>');
+        let scoreLiEl = $('<li class=left id=score-' + i + '>');
         scoreLiEl.text('Score: ' + scoreArray[i].score + ' - ' + scoreArray[i].initials);
         olElement.append(scoreLiEl);
     }
@@ -298,6 +307,7 @@ const createHighScoreListEl = () => {
 const displayHighScores = () => {
     
     clearAll();
+    toggleDisplay('none', highScoresEl, timeEl);
 
     if (previousState !== "quiz") {
         setState('high scores');
@@ -345,7 +355,7 @@ const createFinishTextEl = () => {
 }
 
 const createSubmitButton = () => {
-    let submitButtonEl = $('<button class=center id=submit-button>');
+    let submitButtonEl = $('<button class="center sml-btn" id=submit-button>');
     submitButtonEl.text('Submit');
 
     return submitButtonEl;

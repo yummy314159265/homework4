@@ -3,9 +3,65 @@
     font-family: 'Roboto', Arial, Helvetica, sans-serif;
 }
 
+button {
+    cursor: pointer;
+}
+
+header {
+    margin-top: 60px;
+}
+
+.dark {
+    background-color: black;
+    color: #ebe7dd;
+}
+
+.sml-btn {
+    background-color: #f14e4e;
+    color: #ebe7dd;
+    display:inline-block;
+    padding:0.3em 1.2em;
+    margin:0 0.1em 0.1em 0;
+    border:0.16em solid rgba(255,255,255,0);
+    border-radius:1em;
+    box-sizing: border-box;
+    text-decoration:none;
+    font-family:'Roboto',sans-serif;
+    font-size: 15px;
+    font-weight:400;
+    text-shadow: 0 0.04em 0.04em rgba(0,0,0,0.35);
+    text-align:center;
+    transition: all 0.2s;
+}
+
+.sml-btn:hover{
+    border-color: #ebe7dd;
+}
+
+.answer-button {
+    background-color: #f14e4e;
+    color: #ebe7dd;
+    display:inline-block;
+    padding:0.3em 1.2em;
+    margin:1em 0.1em 0.1em 1em;
+    border:0.16em solid rgba(255,255,255,0);
+    border-radius:1em;
+    box-sizing: border-box;
+    text-decoration:none;
+    font-family:'Roboto',sans-serif;
+    font-size: 18px;
+    font-weight:400;
+    text-shadow: 0 0.04em 0.04em rgba(0,0,0,0.35);
+    text-align:left;
+    transition: all 0.2s;
+    width: 400px;
+    display: block;
+}
+
 .center {
     text-align: center;
-    margin: 10px auto 10px auto;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .top-left {
@@ -22,13 +78,38 @@
     margin-right: 10px;
 }
 
+.left {
+    text-align: left;
+}
+
 .pointer {
     width: fit-content;
     cursor: pointer;
 }
 
-.answer-button {
-    display: block;
+#main {
+    width: 33%;
+}
+
+#question {
+    font-size: 40px;
+}
+
+#start-button {
+    margin-top: 20px;
+}
+
+#initials {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+#back-button {
+    margin-right: 10px;
+}
+
+#clear-button {
+    margin-left: 10px;
 }
 
 #answer-button-1::before {
@@ -45,4 +126,20 @@
 
 #answer-button-4::before {
     content: "4. ";
+}
+
+#after-main {
+    width: 33%;
+    margin-top: 10px;
+}
+
+#feedback {
+    font-style: italic;
+}
+
+@media all and (max-width:30em){
+    .sml-btn {
+        display:block;
+        margin:0.2em auto;
+    }
 }
