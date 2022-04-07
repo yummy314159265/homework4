@@ -151,6 +151,10 @@ h2 {
 }
 
 @media screen and (max-width: 768px) {
+    * {
+        font-size: 18px;
+    }
+    
     .answer-button {
         width: 300px;
     }
