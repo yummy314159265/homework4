@@ -1,5 +1,3 @@
-// TODO: css
-// TODO: create button functions
 const body = $('body');
 const header = $('header');
 const titleEl = $('#title');
@@ -72,9 +70,9 @@ const shuffleArray = (array) => {
     return array;
 }
 
-const toggleDisplay = (cls, ...elements) => {
+const toggleDisplay = (attr, ...elements) => {
     for (let element of elements) {
-        element.css ('display', cls)
+        element.css('display', attr);
     }
 }
 
@@ -102,13 +100,12 @@ const countdown = () => {
             timeEl.text("Time left: 0s");
             displayQuizFailed();
             clearInterval(timer);
-        } else if (questionIndex >= questionArray.length) {
-            clearInterval(timer);
         }
     }, 1000);
 }
 
 const resetQuiz = () => {
+    stopCountdown();
     timeLeft = initialTime;
     questionIndex = 0;
     timeEl.text('Time: ' + timeLeft + 's');
@@ -153,7 +150,7 @@ const displayStart = () => {
 }
 
 const createQuestionEl = () => {
-    let questionEl = $('<h2 class=left id=question>');
+    let questionEl = $('<h2 class=center id=question>');
     questionEl.text(questionArray[questionIndex].question);
     return questionEl;
 }
@@ -229,7 +226,7 @@ const fadeElement = (element) => {
 }
 
 const createFeedbackEl = (string) => {
-    let feedbackEl = $('<div class=left id=feedback>');
+    let feedbackEl = $('<div class=center id=feedback>');
     feedbackEl.text(string);
     return feedbackEl;
 }
@@ -274,7 +271,6 @@ const clearHighScores = () => {
 const createClearButton = () => {
     let clearButtonEl = $('<button class="center sml-btn" id=clear-button>');
     clearButtonEl.text('Clear High Scores');
-
     return clearButtonEl;
 }
 
@@ -298,9 +294,15 @@ const createHighScoreList = (olElement) => {
 }
 
 const createHighScoreListEl = () => {
-    let highScoreListEl = $('<ol class=center id=high-scores-list>')
-    highScoreListEl.css('width', 'fit-content');
+    let highScoreListEl = $('<ol class=center id=high-scores-list>');
+    highScoreListEl.css('width','fit-content');
+    
     createHighScoreList(highScoreListEl);
+
+    if (highScoreListEl.has('li').length) {
+        highScoreListEl.css({'border':'2px dashed white','padding':'10px 20px 10px 40px'});
+    }
+ 
     return highScoreListEl;
 }
 
@@ -309,10 +311,10 @@ const displayHighScores = () => {
     clearAll();
     toggleDisplay('none', highScoresEl, timeEl);
 
-    if (previousState !== "quiz") {
+    if (mainEl.attr('data-state') !== 'high scores'){
         setState('high scores');
     }
-    
+
     header.append(createHighScoreTitleEl());
     mainEl.append(createHighScoreListEl());
     mainEl.append(createBackButton());
@@ -417,10 +419,10 @@ const init = () => {
     displayStart();
 }
 
-body.on('click', '#view-high-scores', displayHighScores);
+highScoresEl.on('click', displayHighScores);
 mainEl.on('click', '#start-button', startQuiz);
-mainEl.on('click', '#back-button', goBack);
 mainEl.on('click', '#submit-button', submitHighScore);
+mainEl.on('click', '#back-button', goBack);
 mainEl.on('click', '#clear-button', clearHighScores);
 for (i=0; i < numberOfAnswers; i++) {
     mainEl.on('click', '#answer-button-' + (i+1), checkAnswer);

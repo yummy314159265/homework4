@@ -1,6 +1,7 @@
 * {
     transition: all 1s ease-in-out;
     font-family: 'Roboto', Arial, Helvetica, sans-serif;
+    font-size: 30px;
 }
 
 button {
@@ -9,6 +10,14 @@ button {
 
 header {
     margin-top: 60px;
+}
+
+h1 {
+    font-size: 300%;
+}
+
+h2 {
+    font-size: 250%;
 }
 
 .dark {
@@ -27,7 +36,6 @@ header {
     box-sizing: border-box;
     text-decoration:none;
     font-family:'Roboto',sans-serif;
-    font-size: 15px;
     font-weight:400;
     text-shadow: 0 0.04em 0.04em rgba(0,0,0,0.35);
     text-align:center;
@@ -49,13 +57,15 @@ header {
     box-sizing: border-box;
     text-decoration:none;
     font-family:'Roboto',sans-serif;
-    font-size: 18px;
     font-weight:400;
     text-shadow: 0 0.04em 0.04em rgba(0,0,0,0.35);
-    text-align:left;
     transition: all 0.2s;
-    width: 400px;
+    width: 500px;
+    font-size: 20px;
     display: block;
+    text-align: left;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .center {
@@ -88,11 +98,7 @@ header {
 }
 
 #main {
-    width: 33%;
-}
-
-#question {
-    font-size: 40px;
+    width: 50%;
 }
 
 #start-button {
@@ -141,5 +147,11 @@ header {
     .sml-btn {
         display:block;
         margin:0.2em auto;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .answer-button {
+        width: 300px;
     }
 }
